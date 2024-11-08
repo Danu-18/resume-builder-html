@@ -41,16 +41,25 @@
 
   <script>
     const queryParams = new URLSearchParams(window.location.search);
-
-    document.getElementById("previewName").textContent = decodeURIComponent(queryParams.get("name") || "");
-    document.getElementById("previewEducation").textContent = decodeURIComponent(queryParams.get("education") || "");
-    document.getElementById("previewExperience").textContent = decodeURIComponent(queryParams.get("experience") || "");
-
-    const image = queryParams.get("image");
-    if (image) {
-      document.getElementById("previewImage").src = decodeURIComponent(image);
-      document.getElementById("previewImageContainer").style.display = "block";
+  
+    const name = queryParams.get("name");
+    const education = queryParams.get("education");
+    const experience = queryParams.get("experience");
+    const imageUrl = queryParams.get("imageUrl");
+  
+    if (name) {
+      document.getElementById("previewName").textContent = decodeURIComponent(name);
+      document.getElementById("previewEducation").textContent = decodeURIComponent(education);
+      document.getElementById("previewExperience").textContent = decodeURIComponent(experience);
+  
+      if (imageUrl) {
+        document.getElementById("previewImage").src = decodeURIComponent(imageUrl);
+        document.getElementById("previewImageContainer").style.display = "block";
+      }
+    } else {
+      alert("No data found in URL.");
     }
   </script>
+  
 </body>
 </html>
