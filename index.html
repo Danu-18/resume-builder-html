@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resume Builder</title>
   <style>
-    /* Same styling as before */
+    /* Same styles as before */
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
@@ -20,26 +20,16 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .form-container h2 {
-      text-align: center;
-    }
-
-    label {
+    label, input, textarea, button {
       display: block;
-      margin: 10px 0 5px;
-    }
-
-    input, textarea, button {
       width: 100%;
-      padding: 10px;
       margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
     }
 
     button {
       background-color: #007BFF;
       color: white;
+      padding: 10px;
       border: none;
       cursor: pointer;
     }
@@ -54,13 +44,13 @@
     <h2>Resume Builder</h2>
     <form id="resumeForm">
       <label for="name">Name:</label>
-      <input type="text" id="name" name="name" placeholder="Enter your name" required />
+      <input type="text" id="name" placeholder="Enter your name" required />
 
       <label for="education">Education:</label>
-      <input type="text" id="education" name="education" placeholder="Enter your education" required />
+      <input type="text" id="education" placeholder="Enter your education" required />
 
       <label for="experience">Experience:</label>
-      <textarea id="experience" name="experience" placeholder="Enter your experience" required></textarea>
+      <textarea id="experience" placeholder="Enter your experience" required></textarea>
 
       <label for="profileImage">Upload Profile Picture:</label>
       <input type="file" id="profileImage" accept="image/*" />
@@ -73,40 +63,22 @@
     document.getElementById("resumeForm").addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const name = document.getElementById("name").value;
-      const education = document.getElementById("education").value;
-      const experience = document.getElementById("experience").value;
-      const profileImage = document.getElementById("profileImage").files[0];
+      const name = encodeURIComponent(document.getElementById("name").value);
+      const education = encodeURIComponent(document.getElementById("education").value);
+      const experience = encodeURIComponent(document.getElementById("experience").value);
+      const profileImageInput = document.getElementById("profileImage").files[0];
 
-      const reader = new FileReader();
-
-      reader.onload = function (event) {
-        const imageBase64 = event.target.result;
-
-        // Save form data to localStorage
-        localStorage.setItem("resumeData", JSON.stringify({
-          name,
-          education,
-          experience,
-          image: imageBase64
-        }));
-
-        // Navigate to the preview page
-        window.location.href = "preview.html";
-      };
-
-      if (profileImage) {
-        reader.readAsDataURL(profileImage);
+      if (profileImageInput) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          const imageBase64 = encodeURIComponent(reader.result);
+          const url = `preview.html?name=${name}&education=${education}&experience=${experience}&image=${imageBase64}`;
+          window.location.href = url;
+        };
+        reader.readAsDataURL(profileImageInput);
       } else {
-        // If no image, save data and navigate directly
-        localStorage.setItem("resumeData", JSON.stringify({
-          name,
-          education,
-          experience,
-          image: null
-        }));
-
-        window.location.href = "preview.html";
+        const url = `preview.html?name=${name}&education=${education}&experience=${experience}`;
+        window.location.href = url;
       }
     });
   </script>
