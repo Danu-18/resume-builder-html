@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Preview</title>
+  <style>
+    /* Same styling for the preview page */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .preview-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    img {
+      max-width: 150px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-container">
+    <h2>Resume Preview</h2>
+    <p><strong>Name:</strong> <span id="previewName"></span></p>
+    <p><strong>Education:</strong> <span id="previewEducation"></span></p>
+    <p><strong>Experience:</strong> <span id="previewExperience"></span></p>
+    <div id="previewImageContainer" style="display: none;">
+      <p><strong>Profile Picture:</strong></p>
+      <img id="previewImage" alt="Profile Picture" />
+    </div>
+  </div>
+
+  <script>
+    // Get data from localStorage
+    const resumeData = JSON.parse(localStorage.getItem("resumeData"));
+
+    if (resumeData) {
+      document.getElementById("previewName").textContent = resumeData.name;
+      document.getElementById("previewEducation").textContent = resumeData.education;
+      document.getElementById("previewExperience").textContent = resumeData.experience;
+
+      if (resumeData.image) {
+        document.getElementById("previewImage").src = resumeData.image;
+        document.getElementById("previewImageContainer").style.display = "block";
+      }
+    } else {
+      alert("No resume data found. Please go back and fill out the form.");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  <style>
+    /* Same styling as before */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container h2 {
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Resume Builder</h2>
+    <form id="resumeForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required />
+
+      <label for="education">Education:</label>
+      <input type="text" id="education" name="education" placeholder="Enter your education" required />
+
+      <label for="experience">Experience:</label>
+      <textarea id="experience" name="experience" placeholder="Enter your experience" required></textarea>
+
+      <label for="profileImage">Upload Profile Picture:</label>
+      <input type="file" id="profileImage" accept="image/*" />
+
+      <button type="submit">Generate Resume</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("resumeForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const education = document.getElementById("education").value;
+      const experience = document.getElementById("experience").value;
+      const profileImage = document.getElementById("profileImage").files[0];
+
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        const imageBase64 = event.target.result;
+
+        // Save form data to localStorage
+        localStorage.setItem("resumeData", JSON.stringify({
+          name,
+          education,
+          experience,
+          image: imageBase64
+        }));
+
+        // Navigate to the preview page
+        window.location.href = "preview.html";
+      };
+
+      if (profileImage) {
+        reader.readAsDataURL(profileImage);
+      } else {
+        // If no image, save data and navigate directly
+        localStorage.setItem("resumeData", JSON.stringify({
+          name,
+          education,
+          experience,
+          image: null
+        }));
+
+        window.location.href = "preview.html";
+      }
+    });
+  </script>
+</body>
+</html>
